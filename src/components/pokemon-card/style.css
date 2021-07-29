@@ -1,0 +1,133 @@
+h3 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.pokemonCard {
+  position: relative;
+  display: flex;
+  flex: 1 0 21%;
+  min-width: 200px;
+  max-width: 200px;
+  height: 350px;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 15px -3px #000000a5;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.pokemonCard:hover {
+  transform: translate3d(0px, -5px, 0px);
+  box-shadow: 0px 10px 25px 5px #000000a5;
+}
+.pokemonIdCard {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.pokemonImageWrapper {
+  flex: 0.7;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.pokemonNameWrapper {
+  background-color: #ffffff;
+  width: 100%;
+  flex: 0.3;
+}
+
+.load-wraper {
+  position: relative;
+  width: 100%;
+  background-color: rgb(211, 211, 211);
+  z-index: 44;
+  border-radius: 5px;
+  flex: 0.7;
+}
+.bottomCardWrapper {
+  background-color: white;
+  width: 100%;
+  flex: 0.3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.bottomCardText1 {
+  position: relative;
+  align-self: center;
+  height: 30px;
+  width: 60%;
+  background-color: #ebebeb;
+}
+.height20Width40 {
+  width: 40%;
+  height: 20px;
+}
+.typesWrapper {
+  align-items: center;
+  justify-content: center;
+}
+.typeName {
+  padding-right: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.activity {
+  position: absolute;
+  left: -45%;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(
+    to left,
+    rgba(251, 251, 251, 0.05),
+    rgba(251, 251, 251, 0.3),
+    rgba(251, 251, 251, 0.6),
+    rgba(251, 251, 251, 0.3),
+    rgba(251, 251, 251, 0.05)
+  );
+  background-image: -moz-linear-gradient(
+    to left,
+    rgba(251, 251, 251, 0.05),
+    rgba(251, 251, 251, 0.3),
+    rgba(251, 251, 251, 0.6),
+    rgba(251, 251, 251, 0.3),
+    rgba(251, 251, 251, 0.05)
+  );
+  background-image: -webkit-linear-gradient(
+    to left,
+    rgba(251, 251, 251, 0.05),
+    rgba(251, 251, 251, 0.3),
+    rgba(251, 251, 251, 0.6),
+    rgba(251, 251, 251, 0.3),
+    rgba(251, 251, 251, 0.05)
+  );
+  animation: loading 1s infinite;
+  z-index: 45;
+}
+
+@keyframes loading {
+  0% {
+    left: -45%;
+  }
+  100% {
+    left: 100%;
+  }
+}

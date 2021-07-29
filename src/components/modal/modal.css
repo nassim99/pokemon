@@ -1,0 +1,87 @@
+.modal-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll !important;
+  z-index: 99;
+  background-color: #00000080;
+}
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f4;
+  margin: 80px auto;
+  width: 90%;
+  min-width: 200px;
+  max-width: 900px;
+  /* max-height: 100%; */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+  padding-bottom: 30px;
+  overflow: hidden;
+  animation: modalSlide 0.5s ease-out forwards;
+  transform: translateY(50%);
+}
+.headerModal {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.pokemonId {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+.closeWrapper {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+.paddingHorizontal {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.flex05 {
+  flex: 0.5;
+}
+.movesWrapper {
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: hidden;
+}
+.moveName {
+  flex: 33% 0 33%;
+  min-width: 200px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #404040;
+}
+h2 {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+}
+@keyframes modalSlide {
+  from {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
