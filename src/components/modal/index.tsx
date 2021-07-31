@@ -1,7 +1,6 @@
 import React, { MouseEvent } from 'react';
 
 import Image from 'components/image';
-import { PokemonDataProps } from 'components/pokemon-card';
 
 import { ReactComponent as Close } from 'assets/close.svg';
 
@@ -9,13 +8,13 @@ import { pokemonColor } from 'utils/pokemon-type-color';
 import { numberToKg, numberToMeter } from 'utils/tools';
 
 import './modal.css';
+import { PokemonDataProps } from 'types/pokemon-data';
 
 interface ModalProps {
   onClose: () => void;
-  showModal: boolean;
-  pokemon: PokemonDataProps;
+  pokemon?: PokemonDataProps;
 }
-const Modal: React.FC<ModalProps> = ({ pokemon, onClose, showModal }) => {
+const Modal: React.FC<ModalProps> = ({ pokemon, onClose }) => {
   //close modal if click outside visible area
   const handleClose = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -34,13 +33,20 @@ const Modal: React.FC<ModalProps> = ({ pokemon, onClose, showModal }) => {
 
   const pokemoneBackgroundColor = pokemonColor(pokemon.types[0].type.name);
   return (
-    <section className="modal-container" onClick={e => handleClose(e)} id="modal">
+    <section
+      data-testid="modalContainer"
+      className="modal-container"
+      onClick={e => handleClose(e)}
+      id="modal">
       <div className="modal-content">
-        <header className="headerModal" style={{ backgroundColor: pokemoneBackgroundColor }}>
+        <header
+          data-testid="header"
+          className="headerModal"
+          style={{ backgroundColor: pokemoneBackgroundColor }}>
           <span className="pokemonId">N: #{pokemon.id}</span>
           <h1>{pokemon.name}</h1>
           <Image image={pokemon.sprites.front_default} />
-          <div onClick={onClose} className="closeWrapper">
+          <div data-testid="closeButton" onClick={onClose} className="closeWrapper">
             <Close stroke="#ebebeb" strokeWidth={10} />
           </div>
         </header>
@@ -120,7 +126,7 @@ const Modal: React.FC<ModalProps> = ({ pokemon, onClose, showModal }) => {
               Moves
             </h2>
 
-            <div className="flex movesWrapper paddingHorizontal">
+            <div data-testid="moves" className="flex movesWrapper paddingHorizontal">
               {pokemon.moves.map((move, i) => (
                 <div className="moveName" key={i}>
                   {move.move.name}

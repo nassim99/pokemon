@@ -1,8 +1,9 @@
+import React from 'react';
 import './style.css';
 
 const PokemonCardSkeleton: React.FC = () => {
   return (
-    <div className="pokemonCard">
+    <div data-testid="skeleton" className="pokemonCard">
       <div className="load-wraper">
         <div className="activity" />
       </div>

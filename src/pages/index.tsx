@@ -3,6 +3,8 @@ import React from 'react';
 import Modal from 'components/modal';
 import PokemonCardSkeleton from 'components/pokemon-card/skeleton';
 import PokemonCard from 'components/pokemon-card';
+import { PokemonDataProps } from 'types/pokemon-data';
+import { apiEndPoint } from 'api/config';
 
 // get window dimensions
 const { innerWidth: width, innerHeight: height } = window;
@@ -18,13 +20,13 @@ const Index: React.FC = () => {
   const loader = React.useRef<HTMLDivElement>(null);
 
   // pokemons list
-  const [pocks, setPoks] = React.useState(emptyArray);
+  const [pocks, setPoks] = React.useState<Array<PokemonDataProps | undefined | any>>(emptyArray);
 
   const [selectedPokemon, setSelectedPokemon] = React.useState<number | null>(null);
 
   // link to fetch pokemons
   const [link, setLink] = React.useState<string>(
-    `https://pokeapi.co/api/v2/pokemon?limit=${numberPokemonsToLoad}`,
+    `${apiEndPoint}/pokemon?limit=${numberPokemonsToLoad}`,
   );
 
   // the observed element is in the view area
@@ -33,7 +35,7 @@ const Index: React.FC = () => {
     entries => {
       const target = entries[0];
       if (pocks[pocks.length - 1] != undefined && target.isIntersecting && link != null) {
-        let extactedpokes = [...pocks, ...emptyArray];
+        const extactedpokes = [...pocks, ...emptyArray];
 
         setPoks(extactedpokes);
       }
@@ -43,7 +45,7 @@ const Index: React.FC = () => {
 
   // create obsever to watch if an element in the view area
   React.useEffect(() => {
-    var options = {
+    const options = {
       root: null,
       rootMargin: '0px',
       threshold: 1.0,
@@ -96,7 +98,6 @@ const Index: React.FC = () => {
 
   const handlePokemonPress = (i: number) => {
     document.documentElement.style.overflow = 'hidden';
-
     setSelectedPokemon(i);
   };
   const handleClose = () => {
@@ -107,7 +108,7 @@ const Index: React.FC = () => {
     <React.Fragment>
       <div className="pokemonsWrapper">
         {pocks.map((item, i) => (
-          <div key={i}>
+          <div data-testid="pokemonsChilds" key={i}>
             {item === undefined ? (
               <PokemonCardSkeleton />
             ) : (
@@ -117,11 +118,12 @@ const Index: React.FC = () => {
         ))}
       </div>
       <div ref={loader} className="loaderElement" />
-      <Modal
-        pokemon={selectedPokemon != null ? pocks[selectedPokemon] : undefined}
-        onClose={handleClose}
-        showModal={selectedPokemon != null}
-      />
+      {selectedPokemon != null && (
+        <Modal
+          pokemon={selectedPokemon != null ? pocks[selectedPokemon] : undefined}
+          onClose={handleClose}
+        />
+      )}
     </React.Fragment>
   );
 };
