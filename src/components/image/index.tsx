@@ -9,7 +9,7 @@ interface ImageProps {
   scrollPosition: ScrollPosition;
 }
 
-const Image: React.FC<ImageProps> = ({ image, scrollPosition, ...rest }) => {
+const Image: React.FC<ImageProps> = React.forwardRef(({ image, scrollPosition, ...rest }, ref) => {
   return (
     <LazyLoadImage
       className="flex imageContainer"
@@ -22,6 +22,6 @@ const Image: React.FC<ImageProps> = ({ image, scrollPosition, ...rest }) => {
       {...rest}
     />
   );
-};
+});
 
 export default trackWindowScroll(Image);

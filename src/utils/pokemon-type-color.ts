@@ -1,8 +1,11 @@
-export const pokemonColor = (type: string) => {
-  const [[, bg]] = Object.entries(PokemonTypeColors).filter(([key, _]) => key === type);
-
+export const pokemonColor: (t: string) => string = type => {
+  const bg =
+    type in PokemonTypeColors
+      ? (PokemonTypeColors[type as keyof typeof PokemonTypeColors] as string)
+      : PokemonTypeColors['normal'];
   return bg;
 };
+
 export const PokemonTypeColors = {
   normal: '#CDCDB9',
   fire: '#F4934D',
