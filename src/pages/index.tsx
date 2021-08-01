@@ -94,8 +94,14 @@ const Index: React.FC = () => {
 
               extractedPokes[index].species = await fetch(extractedPokes[index].species.url)
                 .then(response5 => response5.json())
-                .then(response6 => response6);
+                .then(response6 => response6)
+                .catch(() => {
+                  alert('Sorry, Some Error happens');
+                });
               setPoks([...extractedPokes]);
+            })
+            .catch(() => {
+              alert('Sorry,Ssome Error happens');
             });
 
           i++;
@@ -103,6 +109,9 @@ const Index: React.FC = () => {
 
         // set the next page as a link to fetch next time
         setLink(response2.next);
+      })
+      .catch(() => {
+        alert('Sorry, Some Error happens');
       });
   };
 
