@@ -13,7 +13,9 @@ const maxWidth = width > 900 ? 900 : width;
 // calculate how many pokemon cards can fit the window
 const numberPokemonsToLoad = ~~((maxWidth * height * 1.5) / (200 * 350));
 // create undefined arrays to fill the window
-const emptyArray = [...Array(numberPokemonsToLoad)];
+let emptyArray = [...Array(numberPokemonsToLoad)];
+
+const maxPokes = 1118;
 
 const Index: React.FC = () => {
   // create ref
@@ -34,9 +36,17 @@ const Index: React.FC = () => {
   const handleObserver = React.useCallback(
     entries => {
       const target = entries[0];
-      if (pocks[pocks.length - 1] != undefined && target.isIntersecting && link != null) {
-        const extactedpokes = [...pocks, ...emptyArray];
+      if (
+        pocks.length < maxPokes &&
+        pocks[pocks.length - 1] != undefined &&
+        target.isIntersecting &&
+        link != null
+      ) {
+        if (pocks.length + numberPokemonsToLoad > maxPokes) {
+          emptyArray = [...Array(maxPokes - pocks.length)];
+        }
 
+        const extactedpokes = [...pocks, ...emptyArray];
         setPoks(extactedpokes);
       }
     },
