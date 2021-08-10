@@ -11,6 +11,7 @@ const { innerWidth: width, innerHeight: height } = window;
 // set maximum width
 const maxWidth = width > 900 ? 900 : width;
 // calculate how many pokemon cards can fit the window
+// ~~ is faster substitute for Math.floor() ex:  ~~(14.69) => 14
 const numberPokemonsToLoad = ~~((maxWidth * height * 1.5) / (200 * 350));
 // create undefined arrays to fill the window
 let emptyArray = [...Array(numberPokemonsToLoad)];
@@ -26,10 +27,13 @@ const Index: React.FC = () => {
 
   const [selectedPokemon, setSelectedPokemon] = React.useState<number | null>(null);
 
+  const [abilities, setAbilities] = React.useState<Array<{ name: string; url: string }>>([]);
   // link to fetch pokemons
   const [link, setLink] = React.useState<string>(
     `${apiEndPoint}/pokemon?limit=${numberPokemonsToLoad}`,
   );
+
+  const [selectedAbility, setSelectedAbility] = React.useState<string | null>(null);
 
   // the observed element is in the view area
   // add new undefined array element to the state
@@ -78,15 +82,54 @@ const Index: React.FC = () => {
     // eslint-disable-next-line
   }, [pocks.length]);
 
+  React.useEffect(() => {
+    getAbilities();
+  }, []);
+
+  const getAbilities = () => {
+    fetch('https://pokeapi.co/api/v2/ability/')
+      .then(res => {
+        return res.json();
+      })
+      .then(res2 => {
+        setAbilities(res2.results);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   const getPokemons = () => {
     let extractedPokes = [...pocks];
     // load pokemons list
-    fetch(link)
-      .then(response => response.json())
+    const filteredPokes = selectedAbility != null ? selectedAbility : link;
+    fetch(filteredPokes)
+      .then(response => {
+        const res = response.json();
+
+        return res;
+      })
+      .then(async res3 => {
+        if (selectedAbility != null) {
+          let pokemonsFiltred = { results: new Array(0) };
+          for (let index = 0; index < res3.pokemon.length; index++) {
+            pokemonsFiltred.results[index] = res3.pokemon[index].pokemon;
+          }
+          console.log('pokemonsFiltred', pokemonsFiltred);
+          return pokemonsFiltred;
+        }
+        return res3;
+      })
       .then(async response2 => {
         let i = 0;
         // loop the result and fetch each pokemon details
-        for (let index = pocks.length - numberPokemonsToLoad; index < pocks.length; index++) {
+
+        for (
+          let index =
+            pocks.length - (selectedAbility != null ? pocks.length : numberPokemonsToLoad);
+          index < pocks.length;
+          index++
+        ) {
           await fetch(response2.results[i].url)
             .then(response3 => response3.json())
             .then(async response4 => {
@@ -95,13 +138,15 @@ const Index: React.FC = () => {
               extractedPokes[index].species = await fetch(extractedPokes[index].species.url)
                 .then(response5 => response5.json())
                 .then(response6 => response6)
-                .catch(() => {
+                .catch(e => {
+                  console.log(e);
                   alert('Sorry, Some Error happens');
                 });
               setPoks([...extractedPokes]);
             })
-            .catch(() => {
-              alert('Sorry,Ssome Error happens');
+            .catch(e => {
+              console.log(e);
+              alert('Sorry,Some Error happens');
             });
 
           i++;
@@ -110,21 +155,45 @@ const Index: React.FC = () => {
         // set the next page as a link to fetch next time
         setLink(response2.next);
       })
-      .catch(() => {
+      .catch(e => {
+        console.log(e);
         alert('Sorry, Some Error happens');
       });
   };
 
   const handlePokemonPress = (i: number) => {
+    // disable scroll if modal is visible
     document.documentElement.style.overflow = 'hidden';
     setSelectedPokemon(i);
   };
   const handleClose = () => {
+    // enable scroll if modal is hidden
     document.documentElement.style.overflow = 'scroll';
     setSelectedPokemon(null);
   };
+
+  const handleAbilityChange = (e: any) => {
+    setSelectedAbility(e.target.value);
+    fetch(e.target.value)
+      .then(async res => res.json())
+      .then(async res2 => {
+        let arr = new Array(res2.pokemon.length).fill(undefined);
+        return setPoks(arr);
+      });
+  };
   return (
     <React.Fragment>
+      <select
+        disabled={pocks[pocks.length - 1] === undefined}
+        onChange={handleAbilityChange}
+        value={selectedAbility === null ? 'Select Ability' : selectedAbility}>
+        <option value="Select Ability">Select Ability</option>
+        {abilities.map((item, i) => (
+          <option key={i} value={item.url}>
+            {item.name}
+          </option>
+        ))}
+      </select>
       <div className="pokemonsWrapper">
         {pocks.map((item, i) => (
           <div data-testid="pokemonsChilds" key={i}>

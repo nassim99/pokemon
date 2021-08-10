@@ -1,5 +1,6 @@
 html {
   overflow-x: auto !important;
+  height: 100%;
 }
 body {
   margin: 0;
@@ -8,10 +9,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: scroll !important;
+  height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+#root {
+  height: 100%;
+}
+.pokemonsIndex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .header {
   width: 100%;
@@ -29,16 +40,17 @@ code {
 .wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #daecf2;
   min-width: 250px;
+  align-items: stretch;
+  min-height: 100%;
 }
 
 .pokemonsWrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
   max-width: 900px;
 }

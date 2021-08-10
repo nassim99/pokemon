@@ -8,7 +8,7 @@ const App: React.FC = () => {
       <div className="header">
         <h1>Pokémons</h1>
       </div>
-      <div>
+      <div className="pokemonsIndex">
         <Index />
       </div>
     </div>
